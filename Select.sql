@@ -23,14 +23,19 @@ WHERE name NOT LIKE '% %';
 --Название треков, которые содержат слово «мой» или «my»: 
 SELECT title
 FROM Tracks
-WHERE title ILIKE '%мой%' OR title ILIKE '%my%'; 
+WHERE title ~* '(^|\W)(my|мой)(\W|$)';
 
+--Согласно замечаниям, но у меня он не срабатывает потому что видимо есть кавычки...не стал обходить этот момент, поэтому применил решение выше.
+SELECT title
+FROM Tracks
+WHERE string_to_array(lower(title), ' ') && ARRAY['my', 'мой'];
 
 --Количество исполнителей в каждом жанре:
-SELECT g.name AS genre, COUNT(*) AS artist_count
-FROM Genres g
-JOIN Artists a ON a.genre_id = g.genre_id
-GROUP BY g.name; 
+SELECT Genres.name AS genre, COUNT(ArtistGenres.artist_id) AS artist_count
+FROM Genres
+LEFT JOIN ArtistGenres ON Genres.genre_id = ArtistGenres.genre_id
+GROUP BY Genres.genre_id, Genres.name;
+
 
 --Количество треков, вошедших в альбомы 2019–2020 годов:
 SELECT COUNT(*) AS track_count
@@ -45,33 +50,37 @@ FROM Albums a
 JOIN Tracks t ON t.album_id = a.album_id
 GROUP BY a.title; 
 
---Все исполнители, которые не выпустили альбомы в 2020 году:
-SELECT name
+
+
+---Все исполнители, которые не выпустили альбомы в 2020 году:
+SELECT Artists.name
 FROM Artists
-WHERE artist_id NOT IN (
-  SELECT DISTINCT artist_id
-  FROM Albums
-  WHERE year = 2020
+WHERE Artists.artist_id NOT IN (
+    SELECT ArtistAlbums.artist_id
+    FROM ArtistAlbums
+    JOIN Albums ON ArtistAlbums.album_id = Albums.album_id
+    WHERE Albums.year = 2020
 );
 
---Названия сборников, в которых присутствует конкретный исполнитель(Iron maiden) :
-SELECT c.title AS collection
-FROM Collections c
-JOIN CollectionTracks ct ON ct.collection_id = c.collection_id
-JOIN Tracks t ON t.track_id = ct.track_id
-JOIN Albums a ON a.album_id = t.album_id
-JOIN Artists ar ON ar.artist_id = a.artist_id
-WHERE ar.name = 'Iron Maiden'; 
+--Названия сборников, в которых присутствует конкретный исполнитель(Iron maiden)
+SELECT Collections.title
+FROM Collections
+JOIN CollectionTracks ON Collections.collection_id = CollectionTracks.collection_id
+JOIN Tracks ON CollectionTracks.track_id = Tracks.track_id
+JOIN Albums ON Tracks.album_id = Albums.album_id
+JOIN AlbumArtists ON Albums.album_id = AlbumArtists.album_id
+JOIN Artists ON AlbumArtists.artist_id = Artists.artist_id
+WHERE Artists.name = 'Iron Maiden';
 
 
 --Названия альбомов, в которых присутствуют исполнители более чем одного жанра
-SELECT DISTINCT a.title AS album
-FROM Albums a
-JOIN Artists ar ON ar.artist_id = a.artist_id
-JOIN ArtistGenres ag ON ag.artist_id = ar.artist_id
-GROUP BY a.album_id
-HAVING COUNT(DISTINCT ag.genre_id) > 1;
-
+SELECT DISTINCT Albums.title
+FROM Albums
+JOIN AlbumArtists ON Albums.album_id = AlbumArtists.album_id
+JOIN Artists ON AlbumArtists.artist_id = Artists.artist_id
+JOIN ArtistGenres ON Artists.artist_id = ArtistGenres.artist_id
+GROUP BY Albums.title, ArtistGenres.artist_id
+HAVING COUNT(DISTINCT ArtistGenres.genre_id) > 1;
 
 
 
@@ -82,14 +91,15 @@ LEFT JOIN CollectionTracks ct ON ct.track_id = t.track_id
 WHERE ct.collection_id IS NULL; 
 
 --Исполнитель или исполнители, написавшие самый короткий по продолжительности трек
-SELECT ar.name AS artist
-FROM Tracks t
-JOIN Albums a ON a.album_id = t.album_id
-JOIN Artists ar ON ar.artist_id = a.artist_id
-WHERE t.duration = (
+SELECT Artists.name AS artist
+FROM Tracks
+JOIN Albums ON Albums.album_id = Tracks.album_id
+JOIN Artists ON Artists.artist_id = Albums.artist_id
+WHERE Tracks.duration = (
   SELECT MIN(duration)
   FROM Tracks
-); 
+);
+
 
 --Названия альбомов, содержащих наименьшее количество треков:
 SELECT a.title AS album
