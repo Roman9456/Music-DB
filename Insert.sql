@@ -3,8 +3,7 @@ INSERT INTO Genres (name)
 VALUES
   ('Heavy Metal'),
   ('Thrash Metal'),
-  ('Power Metal')
-ON CONFLICT (name) DO NOTHING;
+  ('Power Metal');
 
 -- Вставка записей в таблицу Artists
 INSERT INTO Artists (name)
@@ -14,8 +13,7 @@ VALUES
   ('Helloween'),
   ('Slayer'),
   ('Dream Theater'),
-  ('Pearl Jam')
-ON CONFLICT (name) DO NOTHING;
+  ('Pearl Jam');
 
 -- Вставка записей в таблицу ArtistGenres
 INSERT INTO ArtistGenres (artist_id, genre_id)
@@ -27,8 +25,7 @@ VALUES
   (4, 2),
   (5, 1),
   (5, 3),
-  (6, 2)
-ON CONFLICT (artist_id, genre_id) DO NOTHING;
+  (6, 2);
 
 -- Вставка записей в таблицу Albums
 INSERT INTO Albums (title, year, artist_id)
@@ -44,25 +41,8 @@ VALUES
   ('Pumpkins United', 2017, 3),
   ('Repentless', 2015, 4),
   ('Distance Over Time', 2019, 5),
-  ('Gigaton', 2020, 6)
-ON CONFLICT ON CONSTRAINT unique_album_title_artist_id DO NOTHING;
+  ('Gigaton', 2020, 6);
 
--- Вставка записей в таблицу AlbumArtists
-INSERT INTO AlbumArtists (album_id, artist_id)
-VALUES
-  (1, 1),
-  (2, 2),
-  (3, 3),
-  (4, 4),
-  (5, 5),
-  (6, 6),
-  (7, 1),
-  (8, 2),
-  (9, 3),
-  (10, 4),
-  (11, 5),
-  (12, 6)
-ON CONFLICT (album_id, artist_id) DO NOTHING;
 
 -- Вставка записей в таблицу Tracks
 INSERT INTO Tracks (title, duration, album_id)
@@ -81,8 +61,7 @@ VALUES
   ('Pumpkins United', 774, 9),
   ('Repentless', 225, 10),
   ('Untethered Angel', 346, 11),
-  ('Dance of the Clairvoyants', 267, 12)
-ON CONFLICT (title) DO NOTHING;
+  ('Dance of the Clairvoyants', 267, 12);
 
 -- Вставка записей в таблицу Collections
 INSERT INTO Collections (title, year)
@@ -93,8 +72,7 @@ VALUES
   ('Thrash Metal Anthems', 2015),
   ('My Collection 2019', 2019),
   ('Collection with "my" Tracks', 2020),
-  ('Best of My Songs', 2022)
-ON CONFLICT (title) DO NOTHING;
+  ('Best of My Songs', 2022);
 
 -- Вставка записей в таблицу CollectionTracks
 INSERT INTO CollectionTracks (collection_id, track_id)
@@ -110,6 +88,6 @@ VALUES
   (7, 9),
   (5, 10),
   (6, 11),
-  (7, 12)
-ON CONFLICT (collection_id, track_id) DO NOTHING;
+  (7, 12);
+
 
