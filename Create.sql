@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS Albums (
   CONSTRAINT unique_album_title_artist_id UNIQUE (title, artist_id)
 );
 
+
 -- Создание таблицы Tracks
 CREATE TABLE IF NOT EXISTS Tracks (
   track_id SERIAL PRIMARY KEY,
@@ -43,6 +44,7 @@ CREATE TABLE IF NOT EXISTS ArtistGenres (
   PRIMARY KEY (artist_id, genre_id)
 );
 
+-- Создание таблицы AlbumArtists
 CREATE TABLE IF NOT EXISTS AlbumArtists (
   album_id INTEGER REFERENCES Albums(album_id),
   artist_id INTEGER REFERENCES Artists(artist_id),
@@ -54,11 +56,4 @@ CREATE TABLE IF NOT EXISTS CollectionTracks (
   collection_id INTEGER REFERENCES Collections(collection_id),
   track_id INTEGER REFERENCES Tracks(track_id),
   PRIMARY KEY (collection_id, track_id)
-);
-
--- Создание таблицы ArtistAlbums
-CREATE TABLE IF NOT EXISTS ArtistAlbums (
-  artist_id INTEGER REFERENCES Artists(artist_id),
-  album_id INTEGER REFERENCES Albums(album_id),
-  PRIMARY KEY (artist_id, album_id)
 );
