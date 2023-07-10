@@ -55,12 +55,10 @@ GROUP BY a.title;
 ---Все исполнители, которые не выпустили альбомы в 2020 году:
 SELECT Artists.name
 FROM Artists
-WHERE Artists.artist_id NOT IN (
-    SELECT ArtistAlbums.artist_id
-    FROM ArtistAlbums
-    JOIN Albums ON ArtistAlbums.album_id = Albums.album_id
-    WHERE Albums.year = 2020
-);
+LEFT JOIN AlbumArtists ON Artists.artist_id = AlbumArtists.artist_id
+LEFT JOIN Albums ON AlbumArtists.album_id = Albums.album_id
+WHERE Albums.year <> 2020 OR Albums.year IS NULL;
+
 
 --Названия сборников, в которых присутствует конкретный исполнитель(Iron maiden)
 SELECT Collections.title
