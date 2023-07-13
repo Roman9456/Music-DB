@@ -10,16 +10,14 @@ CREATE TABLE IF NOT EXISTS Artists (
   name VARCHAR(255) UNIQUE
 );
 
+
 -- Создание таблицы Albums
 CREATE TABLE IF NOT EXISTS Albums (
   album_id SERIAL PRIMARY KEY,
   title VARCHAR(255),
   year INTEGER CHECK (year >= 1900),
-  CONSTRAINT unique_album_title UNIQUE (title),
-  artist_id INTEGER,
-  CONSTRAINT fk_album_artist_id FOREIGN KEY (artist_id) REFERENCES Artists(artist_id)
+  CONSTRAINT unique_album_title UNIQUE (title)
 );
-
 
 -- Создание таблицы Tracks
 CREATE TABLE IF NOT EXISTS Tracks (
