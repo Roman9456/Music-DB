@@ -15,8 +15,9 @@ CREATE TABLE IF NOT EXISTS Albums (
   album_id SERIAL PRIMARY KEY,
   title VARCHAR(255),
   year INTEGER CHECK (year >= 1900),
-  artist_id INTEGER REFERENCES Artists(artist_id),
-  CONSTRAINT unique_album_title_artist_id UNIQUE (title, artist_id)
+  CONSTRAINT unique_album_title UNIQUE (title),
+  artist_id INTEGER,
+  CONSTRAINT fk_album_artist_id FOREIGN KEY (artist_id) REFERENCES Artists(artist_id)
 );
 
 
