@@ -28,20 +28,20 @@ VALUES
   (6, 2);
 
 -- Вставка записей в таблицу Albums
-INSERT INTO Albums (title, year, artist_id)
+INSERT INTO Albums (title, year)
 VALUES
-  ('The Number of the Beast', 1982, 1),
-  ('Master of Puppets', 1986, 2),
-  ('Keeper of the Seven Keys Part II', 1988, 3),
-  ('Reign in Blood', 1986, 4),
-  ('Metropolis Pt. 2: Scenes from a Memory', 1999, 5),
-  ('Ten', 1991, 6),
-  ('The Book of Souls', 2015, 1),
-  ('Hardwired... to Self-Destruct', 2016, 2),
-  ('Pumpkins United', 2017, 3),
-  ('Repentless', 2015, 4),
-  ('Distance Over Time', 2019, 5),
-  ('Gigaton', 2020, 6);
+  ('The Number of the Beast', 1982),
+  ('Master of Puppets', 1986),
+  ('Keeper of the Seven Keys Part II', 1988),
+  ('Reign in Blood', 1986),
+  ('Metropolis Pt. 2: Scenes from a Memory', 1999),
+  ('Ten', 1991),
+  ('The Book of Souls', 2015),
+  ('Hardwired... to Self-Destruct', 2016),
+  ('Pumpkins United', 2017),
+  ('Repentless', 2015),
+  ('Distance Over Time', 2019),
+  ('Gigaton', 2020);
 
 
 -- Вставка записей в таблицу Tracks
@@ -89,5 +89,8 @@ VALUES
   (5, 10),
   (6, 11),
   (7, 12);
+
+
+
 
 
